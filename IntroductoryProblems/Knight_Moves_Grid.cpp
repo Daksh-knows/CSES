@@ -132,27 +132,30 @@ ll getRandomNumber(ll l, ll r) {return uniform_int_distribution<ll>(l, r)(rng);}
 //Until death, all defeat is psychological. - Napoleon Bonaparte
 
 void solve(){
-    ll start = 9;
-    ll x; cin >> x;
-    ll digits = 1;
-    while(start* digits < x){
-        x -= start * digits;
-        digits++;
-        start *= 10;
+    ll n; cin >> n;
+    vv64 res(n, v64(n, -1));
+    res[0][0] = 0;
+    queue<p64> q; q.push({0,0});
+    v64 dx = {2, 2, -2, -2, 1, 1, -1, -1 };
+    v64 dy = {1, -1, 1, -1, 2, -2, 2, -2 };
+    while(!q.empty()){
+        auto [x, y] = q.front(); q.pop();
+        forn(i,8){
+            ll nx = x + dx[i];
+            ll ny = y + dy[i];
+            if(nx >= 0 && ny >= 0 && nx < n && ny < n && res[nx][ny] == -1){
+                res[nx][ny] = res[x][y] + 1;
+                q.push({nx, ny});
+            }
+        }
     }
-    ll first = 1;
-    for(ll i =1 ; i< digits; i++, first *= 10);
-    ll num = first + (x+digits-1)/digits - 1;
-    // cout << x << ' ' << first << ' ' << digits << ' ' << num << ln;
-    x = (x - 1 + digits)%digits;
-    string s = to_string(num);
-    cout << s[x] << ln;
+    forn(i,n) forn(j,n) cout << res[i][j] << " \n"[j == n-1];
 }
 int main()
 {
     fast_cin();
     ll t=1;
-    cin >> t;
+    // cin >> t;
     for(int it=1;it<=t;it++) {
         solve();
     }

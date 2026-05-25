@@ -132,27 +132,25 @@ ll getRandomNumber(ll l, ll r) {return uniform_int_distribution<ll>(l, r)(rng);}
 //Until death, all defeat is psychological. - Napoleon Bonaparte
 
 void solve(){
-    ll start = 9;
-    ll x; cin >> x;
-    ll digits = 1;
-    while(start* digits < x){
-        x -= start * digits;
-        digits++;
-        start *= 10;
+    ll n; cin >> n;
+    vv64 a(n, v64(n));
+    forn(i,n) forn(j,n){
+        vector<bool> used(2*n + 1, false);
+        for(ll ix = 0; ix < i; ix++){
+            used[a[ix][j]] = true;
+        }
+        for(ll jx = 0; jx < j; jx++){
+            used[a[i][jx]] = true;
+        }
+        while(used[a[i][j]]) a[i][j]++;
     }
-    ll first = 1;
-    for(ll i =1 ; i< digits; i++, first *= 10);
-    ll num = first + (x+digits-1)/digits - 1;
-    // cout << x << ' ' << first << ' ' << digits << ' ' << num << ln;
-    x = (x - 1 + digits)%digits;
-    string s = to_string(num);
-    cout << s[x] << ln;
+    forn(i,n) forn(j,n) cout << a[i][j] << " \n"[j == n-1];
 }
 int main()
 {
     fast_cin();
     ll t=1;
-    cin >> t;
+    // cin >> t;
     for(int it=1;it<=t;it++) {
         solve();
     }
